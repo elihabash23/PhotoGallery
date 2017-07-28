@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.io.IOException;
 
@@ -44,6 +45,31 @@ public class PhotoGalleryFragment extends Fragment {
 
         return v;
     }
+
+    /**
+     * The PhotoHolder class will used to hold the views for the RecyclerView
+     */
+
+    private class PhotoHolder extends RecyclerView.ViewHolder {
+
+        private TextView mTitleTextView;
+
+        public PhotoHolder(View itemView) {
+            super(itemView);
+
+            mTitleTextView = (TextView) itemView;
+        }
+
+        public void bindGalleryItem(GalleryItem item) {
+            mTitleTextView.setText(item.toString());
+        }
+    }
+
+    /**
+     * FetchItemsTask will run a background thread to fetch
+     * Flickr's most recent photos instead of running on
+     * the main thread.
+     */
 
     private class FetchItemsTask extends AsyncTask<Void, Void, Void> {
 
