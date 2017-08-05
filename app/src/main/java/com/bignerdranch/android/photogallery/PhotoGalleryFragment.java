@@ -72,6 +72,15 @@ public class PhotoGalleryFragment extends Fragment {
         return v;
     }
 
+    /**
+     * Added a cleanup method to onDestroyView in case a user rotates the screen
+     */
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mThumbnailDownloader.clearQueue();
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
