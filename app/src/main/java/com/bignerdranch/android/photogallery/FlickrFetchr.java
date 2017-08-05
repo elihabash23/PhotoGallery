@@ -77,6 +77,16 @@ public class FlickrFetchr {
         return new String(getUrlBytes(urlSpec));
     }
 
+    public List<GalleryItem> fetchRecentPhotos() {
+        String url = buildURL(FETCH_RECENTS_METHOD, null);
+        return downloadGalleryItems(url);
+    }
+
+    public List<GalleryItem> searchPhotos(String query) {
+        String url = buildURL(SEARCH_METHOD, query);
+        return downloadGalleryItems(url);
+    }
+
     /**
      *fetchItems() will fetch the photos from Flickr. The extras parameter is
      * used to tell Flickr to include the URL for the small version of the
@@ -111,8 +121,8 @@ public class FlickrFetchr {
 
     /**
      * buildURL helps build the URL based on method and query values
-     * @param method
-     * @param query
+     * @param method Will either be to search photos or get recent photos
+     * @param query The text used for searching
      * @return
      */
 
