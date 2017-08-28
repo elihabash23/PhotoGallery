@@ -30,6 +30,9 @@ public class PollService extends IntentService {
     public static final String ACTION_SHOW_NOTIFICATION =
             "com.bignerdranch.android.photogallery.SHOW_NOTIFICATION";
 
+    public static final String PERM_PRIVATE =
+            "com.bignerdranch.android.photogallery.PRIVATE";
+
     /**
      * newIntent(Context) should be used by any component that
      * wants to start this service
@@ -130,7 +133,7 @@ public class PollService extends IntentService {
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
             notificationManager.notify(0, notification);
 
-            sendBroadcast(new Intent(ACTION_SHOW_NOTIFICATION));
+            sendBroadcast(new Intent(ACTION_SHOW_NOTIFICATION), PERM_PRIVATE);
         }
 
         QueryPreferences.setLastResultId(this, resultId);
