@@ -27,6 +27,9 @@ public class PollService extends IntentService {
     // Set interval to 1 minute
     private static final long POll_INTERVAL_MS = TimeUnit.MINUTES.toMillis(15);
 
+    public static final String ACTION_SHOW_NOTIFICATION =
+            "com.bignerdranch.android.photogallery.SHOW_NOTIFICATION";
+
     /**
      * newIntent(Context) should be used by any component that
      * wants to start this service
@@ -55,6 +58,9 @@ public class PollService extends IntentService {
             alarmManager.cancel(pi);
             pi.cancel();
         }
+
+//         Writing alarm status preference when the alarm is set
+        QueryPreferences.setAlarmOn(context, isOn);
     }
 
     /**
@@ -105,25 +111,27 @@ public class PollService extends IntentService {
             Log.i(TAG, "Got an old result: " + resultId);
         } else {
             Log.i(TAG, "Got a new result: " + resultId);
-        }
 
 //        Have PollService notify the user that a new result is ready by creating
 //        a Notification and calling NotificationManager.notify(int, Notification)
-        Resources resources = getResources();
-        Intent i = PhotoGalleryActivity.newIntent(this);
-        PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
+            Resources resources = getResources();
+            Intent i = PhotoGalleryActivity.newIntent(this);
+            PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
 
-        Notification notification = new NotificationCompat.Builder(this)
-                .setTicker(resources.getString(R.string.new_pictures_title))
-                .setSmallIcon(android.R.drawable.ic_menu_report_image)
-                .setContentTitle(resources.getString(R.string.new_pictures_title))
-                .setContentText(resources.getString(R.string.new_pictures_text))
-                .setContentIntent(pi)
-                .setAutoCancel(true)
-                .build();
+            Notification notification = new NotificationCompat.Builder(this)
+                    .setTicker(resources.getString(R.string.new_pictures_title))
+                    .setSmallIcon(android.R.drawable.ic_menu_report_image)
+                    .setContentTitle(resources.getString(R.string.new_pictures_title))
+                    .setContentText(resources.getString(R.string.new_pictures_text))
+                    .setContentIntent(pi)
+                    .setAutoCancel(true)
+                    .build();
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(0, notification);
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+            notificationManager.notify(0, notification);
+
+            sendBroadcast(new Intent(ACTION_SHOW_NOTIFICATION));
+        }
 
         QueryPreferences.setLastResultId(this, resultId);
     }
