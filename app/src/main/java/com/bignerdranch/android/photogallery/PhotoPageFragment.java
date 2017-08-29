@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 /**
  * Created by eliballislife11 on 8/28/17.
@@ -40,6 +41,9 @@ public class PhotoPageFragment extends VisibleFragment {
         View v = inflater.inflate(R.layout.fragment_photo_page, container, false);
 
         mWebView = (WebView) v.findViewById(R.id.web_view);
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.setWebViewClient(new WebViewClient());
+        mWebView.loadUrl(mUri.toString());
 
         return v;
     }
